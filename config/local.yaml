@@ -1,0 +1,182 @@
+  # Конфигурация для локальной среды разработки
+
+  # Настройки сервера
+  server:
+    port: 8080
+    host: localhost
+
+  # Настройки базы данных
+  database:
+    driver: postgres
+    host: localhost
+    port: 5432
+    name: myapp_db
+    user: myapp_user
+    password: myapp_password
+
+  # Настройки логирования
+  logging:
+    level: debug
+    format: json
+    output: stdout
+
+  # Настройки кэширования
+  cache:
+    type: redis
+    address: localhost:6379
+    password: ""
+    db: 0
+
+  # Настройки аутентификации
+  auth:
+    jwt_secret: my_super_secret_key
+    token_expiration: 24h
+
+  # Настройки API
+  api:
+    version: v1
+    rate_limit:
+      requests: 100
+      per_second: 1
+
+  # Настройки для внешних сервисов
+  external_services:
+    email:
+      smtp_host: smtp.example.com
+      smtp_port: 587
+      smtp_user: user@example.com
+      smtp_password: email_password
+
+  # Настройки Kafka
+  kafka:
+    # Адреса брокеров Kafka
+    brokers:
+      - localhost:9092
+    # Настройки продюсера
+    producer:
+      acks: all
+      retries: 3
+      batch_size: 16384
+      linger_ms: 1
+    # Настройки консьюмера
+    consumer:
+      group_id: myapp_consumer_group
+      auto_offset_reset: earliest
+      enable_auto_commit: true
+      auto_commit_interval_ms: 5000
+
+  # Настройки gRPC сервера
+  grpc:
+    port: 50051
+    max_concurrent_streams: 100
+    keepalive_time: 7200
+    keepalive_timeout: 20
+    max_connection_idle: 300
+    max_connection_age: 600
+    max_connection_age_grace: 60
+    ping_without_stream_allowed: false
+
+  # Настройки для мониторинга
+  monitoring:
+    enabled: true
+    prometheus_endpoint: /metrics
+
+  # Настройки для тестирования
+  test:
+    mock_external_services: true
+
+  # Настройки для отладки
+  debug:
+    enabled: true
+    pprof_enabled: true
+
+  # Настройки Prometheus
+  prometheus:
+    # Порт, на котором Prometheus будет собирать метрики
+    port: 9090
+    # Интервал сбора метрик (в секундах)
+    scrape_interval: 15
+    # Таймаут для сбора метрик (в секундах)
+    scrape_timeout: 10
+    # Путь к файлу конфигурации Prometheus
+    config_file: /etc/prometheus/prometheus.yml
+
+  # Настройки Grafana
+  grafana:
+    # Порт, на котором будет работать Grafana
+    port: 3000
+    # Адрес, на котором будет доступна Grafana
+    address: localhost
+    # Путь к директории с данными Grafana
+    data_dir: /var/lib/grafana
+    # Настройки базы данных для Grafana
+    database:
+      type: sqlite3
+      path: /var/lib/grafana/grafana.db
+    # Настройки безопасности
+    security:
+      admin_user: admin
+      admin_password: admin_password
+      secret_key: grafana_secret_key
+    # Настройки для интеграции с Prometheus
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://localhost:9090
+        access: proxy
+        is_default: true
+
+  # Настройки Jaeger
+  jaeger:
+    # Адрес агента Jaeger
+    agent_host: localhost
+    # Порт агента Jaeger
+    agent_port: 6831
+    # Имя сервиса для трассировки
+    service_name: myapp
+    # Тип сэмплера (const, probabilistic, rateLimiting, remote)
+    sampler_type: const
+    # Параметр сэмплера (1 означает сэмплирование всех запросов)
+    sampler_param: 1
+    # Логирование spans
+    log_spans: true
+    # Буферизация spans перед отправкой
+    buffer_flush_interval: 1s
+    # Максимальное количество spans в буфере
+    max_packet_size: 0
+    # Включение/выключение трассировки
+    enabled: true
+
+  # Настройки Elasticsearch
+  elasticsearch:
+    # Адреса узлов Elasticsearch
+    hosts:
+      - http://localhost:9200
+    # Имя пользователя для аутентификации (если требуется)
+    username: elastic
+    # Пароль для аутентификации (если требуется)
+    password: elastic_password
+    # Настройки индекса
+    index:
+      # Префикс для имени индекса
+      prefix: myapp
+      # Количество шардов
+      number_of_shards: 1
+      # Количество реплик
+      number_of_replicas: 1
+    # Настройки клиента
+    client:
+      # Таймаут подключения (в секундах)
+      connect_timeout: 10
+      # Таймаут операции (в секундах)
+      request_timeout: 30
+    # Настройки буфера
+    bulk:
+      # Размер буфера (количество документов)
+      size: 1000
+      # Интервал сброса буфера (в секундах)
+      flush_interval: 5
+    # Включение/выключение снипетов
+    sniff: true
+    # Включение/выключение трассировки запросов
+    trace: false
